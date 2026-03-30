@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const BASE_URL = import.meta.env.VITE_API_URL
+const BASE_URL = 'https://task-backend-jc5d.onrender.com'
 
 function App() {
   const [email, setEmail] = useState("")
