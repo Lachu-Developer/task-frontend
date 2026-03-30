@@ -24,6 +24,7 @@ function App() {
 
   const dangerBtn = {
     ...btn,
+    backgroundColor: "#000000"
   }
 
   const secondaryBtn = {
