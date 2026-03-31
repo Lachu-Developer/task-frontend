@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Navbar from "../components/Navbar"
 import TaskItem from "../components/TaskItem"
 import Loader from "../components/Loader"
 
-const BASE_URL = "https://your-backend.onrender.com"
+const BASE_URL = "https://task-backend-jc5d.onrender.com"
 
 function Dashboard() {
   const [tasks, setTasks] = useState([])
@@ -14,7 +14,7 @@ function Dashboard() {
 
   const token = localStorage.getItem("token")
 
-  const getTasks = () => {
+  const getTasks = useCallback(() => {
     setLoading(true)
     fetch(`${BASE_URL}/api/tasks`, {
       headers: { Authorization: "Bearer " + token }
@@ -24,11 +24,12 @@ function Dashboard() {
         setTasks(data)
         setLoading(false)
       })
-  }
+  }, [token])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getTasks()
-  }, [])
+  }, [getTasks])
 
   const addTask = () => {
     fetch(`${BASE_URL}/api/tasks`, {

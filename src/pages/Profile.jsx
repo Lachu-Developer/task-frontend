@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 
-const BASE_URL = "https://your-backend.onrender.com"
+const BASE_URL = "https://task-backend-jc5d.onrender.com"
 
 function Profile() {
   const [user, setUser] = useState({})
@@ -13,7 +13,7 @@ function Profile() {
     })
       .then(res => res.json())
       .then(setUser)
-  }, [])
+  }, [token])
 
   return (
     <div>
