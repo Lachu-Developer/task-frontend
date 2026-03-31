@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import Navbar from "../components/Navbar"
+import TaskItem from "../components/TaskItem"
 import Loader from "../components/Loader"
 
 const BASE_URL = "https://your-backend.onrender.com"
@@ -7,6 +8,7 @@ const BASE_URL = "https://your-backend.onrender.com"
 function Dashboard() {
   const [tasks, setTasks] = useState([])
   const [title, setTitle] = useState("")
+  const [dueDate, setDueDate] = useState("")
   const [filter, setFilter] = useState("all")
   const [loading, setLoading] = useState(false)
 
@@ -35,9 +37,10 @@ function Dashboard() {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token
       },
-      body: JSON.stringify({ title })
+      body: JSON.stringify({ title, dueDate })
     }).then(() => {
       setTitle("")
+      setDueDate("")
       getTasks()
     })
   }
@@ -48,6 +51,15 @@ function Dashboard() {
     return true
   })
 
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    localStorage.removeItem("token")
+    window.location.href = "/"
+  }, 3600000) // 1 hour
+
+  return () => clearTimeout(timer)
+}, [])
+
   return (
     <div>
       <Navbar />
@@ -55,7 +67,8 @@ function Dashboard() {
       <div className="container">
         <h2>Dashboard</h2>
 
-        <input value={title} onChange={e => setTitle(e.target.value)} />
+        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Task" />
+        <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} />
         <button onClick={addTask}>Add</button>
 
         <div>
@@ -67,9 +80,7 @@ function Dashboard() {
         {loading && <Loader />}
 
         {filteredTasks.map(task => (
-          <div key={task._id} className="task">
-            <span>{task.title}</span>
-          </div>
+          <TaskItem key={task._id} task={task} refresh={getTasks} />
         ))}
       </div>
     </div>

@@ -1,12 +1,26 @@
+import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 
+const BASE_URL = "https://your-backend.onrender.com"
+
 function Profile() {
+  const [user, setUser] = useState({})
+  const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/api/profile`, {
+      headers: { Authorization: "Bearer " + token }
+    })
+      .then(res => res.json())
+      .then(setUser)
+  }, [])
+
   return (
     <div>
       <Navbar />
       <div className="container">
-        <h2>User Profile</h2>
-        <p>Email: user@example.com</p>
+        <h2>Profile</h2>
+        <p>Email: {user.email}</p>
       </div>
     </div>
   )
