@@ -4,7 +4,7 @@ import Loader from "../components/Loader"
 
 const BASE_URL = "https://your-backend.onrender.com"
 
-function Login() {
+function Signup() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
@@ -12,11 +12,11 @@ function Login() {
 
   const navigate = useNavigate()
 
-  const login = () => {
+  const signup = () => {
     setLoading(true)
     setError("")
 
-    fetch(`${BASE_URL}/api/login`, {
+    fetch(`${BASE_URL}/api/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
@@ -25,9 +25,9 @@ function Login() {
       .then(data => {
         setLoading(false)
 
-        if (data.token) {
-          localStorage.setItem("token", data.token)
-          navigate("/dashboard")
+        if (data.message) {
+          alert("Signup success")
+          navigate("/")
         } else {
           setError(data.error)
         }
@@ -36,23 +36,17 @@ function Login() {
 
   return (
     <div className="center">
-      <h2>Login</h2>
+      <h2>Signup</h2>
 
       <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
+      <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
 
       {loading && <Loader />}
       {error && <p className="error">{error}</p>}
 
-      <button onClick={login}>Login</button>
-      <p>
-        Don't have an account?{" "}
-        <span onClick={() => navigate("/signup")} style={{ color: "blue", cursor: "pointer" }}>
-          Signup
-        </span>
-      </p>
+      <button onClick={signup}>Signup</button>
     </div>
   )
 }
 
-export default Login
+export default Signup
