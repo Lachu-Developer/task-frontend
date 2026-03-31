@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Loader from "../components/Loader"
 
-const BASE_URL = "https://your-backend.onrender.com"
+const BASE_URL = "https://task-backend-jc5d.onrender.com"
 
 function Signup() {
   const [email, setEmail] = useState("")
